@@ -22,20 +22,32 @@ namespace LR4
             public int x;
             public int y;
             public int r = 30;
+            public bool flag;
         }
 
         public class CircleStorage
         {
             public CCircle[] arr = new CCircle[1000];
             public int i = 0;
-            int selected = 0;
+
+            public bool Check(int x, int y)
+            {
+                for (int j = 0; j < this.i; j++)
+                {
+                    if (x > this.arr[j].x - 15 && x < this.arr[j].x + 15 && y > this.arr[j].y - 15 && y < this.arr[j].y + 15)
+                    {
+                        this.arr[j].flag = true;
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             public void AddStor(CCircle circ)
             {
                 if (i < 1000)
                 {
                     arr[i] = circ;
-                    selected = i;
                     i++;
                 }
                 else
@@ -45,23 +57,48 @@ namespace LR4
 
         CircleStorage stor = new CircleStorage();
 
-        Pen persPen = new Pen(Color.Black, 3);
+        Pen mPen = new Pen(Color.Black, 3);
+        Pen aPen = new Pen(Color.Red, 3);
         private void Panel1_MouseClick(object sender, MouseEventArgs e)
         {
-            CCircle circ = new CCircle();
-            circ.x = e.X;
-            circ.y = e.Y;
-           // Pen pen = new Pen(Color.Blue);
-           // Rectangle rect = new Rectangle(e.X - 15, e.Y - 15, 30, 30);
-           // panel1.CreateGraphics().DrawEllipse(persPen, rect);
-            stor.AddStor(circ);
-            if (stor.i > 0)
-                for (int j = 0; j < stor.i; j++)
-                {
-                    Pen pen = new Pen(Color.Blue);
-                    Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                    panel1.CreateGraphics().DrawEllipse(persPen, rect);
-                }
+            if (stor.Check(e.X, e.Y))
+            {
+                if (stor.i > 0)
+                    for (int j = 0; j < stor.i; j++)
+                    {
+                        if (stor.arr[j].flag)
+                        {
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(aPen, rect);
+                        }
+                        else
+                        {
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(mPen, rect);
+                        }
+                    }
+            }
+            else
+            {
+                CCircle circ = new CCircle();
+                circ.x = e.X;
+                circ.y = e.Y;
+                stor.AddStor(circ);
+                if (stor.i > 0)
+                    for (int j = 0; j < stor.i; j++)
+                    {
+                        if (stor.arr[j].flag)
+                        {
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(aPen, rect);
+                        }
+                        else
+                        {
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(mPen, rect);
+                        }
+                    }
+            }
         }
     }
 }
