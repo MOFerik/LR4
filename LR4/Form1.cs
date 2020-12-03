@@ -36,6 +36,10 @@ namespace LR4
                 {
                     if (x > this.arr[j].x - 15 && x < this.arr[j].x + 15 && y > this.arr[j].y - 15 && y < this.arr[j].y + 15)
                     {
+                        for (int k = 0; k < this.i; k++)
+                        {
+                            this.arr[k].flag = false;
+                        }
                         this.arr[j].flag = true;
                         return true;
                     }
@@ -63,20 +67,19 @@ namespace LR4
         {
             if (stor.Check(e.X, e.Y))
             {
-                if (stor.i > 0)
-                    for (int j = 0; j < stor.i; j++)
+                for (int j = 0; j < stor.i; j++)
+                {
+                    if (stor.arr[j].flag)
                     {
-                        if (stor.arr[j].flag)
-                        {
-                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                            panel1.CreateGraphics().DrawEllipse(aPen, rect);
-                        }
-                        else
-                        {
-                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                            panel1.CreateGraphics().DrawEllipse(mPen, rect);
-                        }
+                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                        panel1.CreateGraphics().DrawEllipse(aPen, rect);
                     }
+                    else
+                    {
+                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                        panel1.CreateGraphics().DrawEllipse(mPen, rect);
+                    }
+                }
             }
             else
             {
@@ -84,20 +87,20 @@ namespace LR4
                 circ.x = e.X;
                 circ.y = e.Y;
                 stor.AddStor(circ);
-                if (stor.i > 0)
-                    for (int j = 0; j < stor.i; j++)
+                for (int j = 0; j < stor.i; j++)
+                {
+                    if (j != (stor.i - 1))
                     {
-                        if (stor.arr[j].flag)
-                        {
-                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                            panel1.CreateGraphics().DrawEllipse(aPen, rect);
-                        }
-                        else
-                        {
-                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                            panel1.CreateGraphics().DrawEllipse(mPen, rect);
-                        }
+                        stor.arr[j].flag = false;
+                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                        panel1.CreateGraphics().DrawEllipse(mPen, rect);
                     }
+                    else
+                    {
+                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                        panel1.CreateGraphics().DrawEllipse(aPen, rect);
+                    }
+                }
             }
         }
     }
