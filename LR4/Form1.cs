@@ -30,16 +30,19 @@ namespace LR4
             public CCircle[] arr = new CCircle[1000];
             public int i = 0;
 
+            public bool ctrlPress = false;
+
             public bool Check(int x, int y)
             {
                 for (int j = 0; j < this.i; j++)
                 {
                     if (x > this.arr[j].x - 15 && x < this.arr[j].x + 15 && y > this.arr[j].y - 15 && y < this.arr[j].y + 15)
                     {
-                        for (int k = 0; k < this.i; k++)
-                        {
-                            this.arr[k].flag = false;
-                        }
+                        if (ModifierKeys.HasFlag(Keys.Control) != true)
+                            for (int k = 0; k < this.i; k++)
+                            {
+                               this.arr[k].flag = false;
+                            }
                         this.arr[j].flag = true;
                         return true;
                     }
