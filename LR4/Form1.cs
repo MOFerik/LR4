@@ -15,6 +15,8 @@ namespace LR4
         public Form1()
         {
             InitializeComponent();
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.KeyDown += new KeyEventHandler(Form1_KeyDown);
         }
 
         public class CCircle
@@ -36,7 +38,7 @@ namespace LR4
             {
                 for (int j = 0; j < this.i; j++)
                 {
-                    if (x > this.arr[j].x - 15 && x < this.arr[j].x + 15 && y > this.arr[j].y - 15 && y < this.arr[j].y + 15)
+                    if (this.arr[j] != null && x > this.arr[j].x - 15 && x < this.arr[j].x + 15 && y > this.arr[j].y - 15 && y < this.arr[j].y + 15)
                     {
                         if (ModifierKeys.HasFlag(Keys.Control) != true)
                             for (int k = 0; k < this.i; k++)
@@ -72,15 +74,18 @@ namespace LR4
             {
                 for (int j = 0; j < stor.i; j++)
                 {
-                    if (stor.arr[j].flag)
+                    if (stor.arr[j] != null)
                     {
-                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                        panel1.CreateGraphics().DrawEllipse(aPen, rect);
-                    }
-                    else
-                    {
-                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                        panel1.CreateGraphics().DrawEllipse(mPen, rect);
+                        if (stor.arr[j].flag)
+                        {
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(aPen, rect);
+                        }
+                        else
+                        {
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(mPen, rect);
+                        }
                     }
                 }
             }
@@ -92,16 +97,39 @@ namespace LR4
                 stor.AddStor(circ);
                 for (int j = 0; j < stor.i; j++)
                 {
-                    if (j != (stor.i - 1))
+                    if (stor.arr[j] != null)
                     {
-                        stor.arr[j].flag = false;
-                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                        panel1.CreateGraphics().DrawEllipse(mPen, rect);
+                        if (j != (stor.i - 1))
+                        {
+                            stor.arr[j].flag = false;
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(mPen, rect);
+                        }
+                        else
+                        {
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            panel1.CreateGraphics().DrawEllipse(aPen, rect);
+                        }
                     }
-                    else
+                }
+            }
+        }
+
+        void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Delete)
+            {
+                for (int j = 0; j < stor.i; j++)
+                {
+                    if (stor.arr[j] != null)
                     {
-                        Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
-                        panel1.CreateGraphics().DrawEllipse(aPen, rect);
+                        if (stor.arr[j].flag == true)
+                        {
+                            Pen wPen = new Pen(Color.White, 3);
+                            Rectangle rect = new Rectangle(stor.arr[j].x - 15, stor.arr[j].y - 15, 30, 30);
+                            this.panel1.CreateGraphics().DrawEllipse(wPen, rect);
+                            stor.arr[j] = null;
+                        }
                     }
                 }
             }
